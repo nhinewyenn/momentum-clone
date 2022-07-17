@@ -40,12 +40,16 @@ main {
   gap: 1rem;
 }
 
-.current-time {
-  font-size: 4rem;
-}
-
 .currency {
   line-height: 1.5;
+}
+
+.current-time {
+  font-size: 5rem;
+}
+
+.time-of-day {
+  font-size: 2rem;
 }
 
 .quote {
