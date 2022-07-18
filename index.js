@@ -71,7 +71,7 @@ function getTime() {
   });
   document.querySelector(".current-time").textContent = currentTime;
 
-  // Get hours + display timeData
+  // Get hours + display message
   const timeData = [
     [22, "Working late 🌚"],
     [18, "Good evening 🌚"],
