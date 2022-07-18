@@ -13,7 +13,7 @@ function getBackgroundContent() {
     .then(res => res.json())
     .then(data => {
       const { user, urls } = data;
-      body.style.backgroundImage = `url(${urls.regular}), linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.569))`; //change to urls.full when finish
+      body.style.backgroundImage = `url(${urls.full}), linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.569))`;
       imgAuthor.textContent = `Image by ${user.name}`;
       imgLocation.textContent = `${!user.location ? "" : user.location}`;
     })
@@ -31,9 +31,9 @@ function getExchangeRate() {
     .then(res => res.json())
     .then(data => {
       exchangeRate.innerHTML = `
-      <h4 class="currency">🇺🇸 AUD/USD: ${data.rates.USD}</h4>
-      <h4 class="currency">🇬🇧 AUD/GPB: ${data.rates.GBP}</h4>
-      <h4 class="currency">🇨🇦 AUD/CAD: ${data.rates.CAD}</h4>
+      <h4 class="currency">🇺🇸 AUD/USD: $${data.rates.USD}</h4>
+      <h4 class="currency">🇬🇧 AUD/GPB: $${data.rates.GBP}</h4>
+      <h4 class="currency">🇨🇦 AUD/CAD: $${data.rates.CAD}</h4>
       `;
     })
     .catch(err => alert("Couldn't get your data"));
@@ -43,16 +43,20 @@ getExchangeRate();
 navigator.geolocation.getCurrentPosition(position => {
   const { latitude, longitude } = position.coords;
   fetch(
-    `https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metrics`
+    `https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric`
   )
     .then(res => {
       if (!res.ok) throw Error(`Could not get your location`);
       return res.json();
     })
     .then(data => {
-      console.log(data);
+      const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       document.querySelector(".weather").innerHTML = `
-      <img src="" class="weather-icon" alt="...icon">
+      <div class="weather-container">
+      <img src="${iconUrl}" class="weather-icon" alt="">
+      <h3 class="weather-temp">${Math.round(data.main.temp)}ºC</h3>
+      <p class="weather-city">${data.name}</p>
+      </div>
       `;
     })
     .catch(err => console.error(err.message));
@@ -73,7 +77,8 @@ function getTime() {
     [18, "Good evening 🌚"],
     [12, "Good afternoon 🌤"],
     [5, "Good morning ☀️"],
-    [0, "Whoa, early bird 🦜"],
+    [3, "Whoa, early bird ☀️"],
+    [0, "Sleep well 💤"],
   ];
 
   const currentHrs = new Date().getHours();
